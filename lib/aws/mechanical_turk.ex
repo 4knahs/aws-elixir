@@ -589,10 +589,13 @@ defmodule AWS.MechanicalTurk do
     headers = AWS.Request.sign_v4(client, "POST", url, headers, payload)
     case HTTPoison.post(url, payload, headers, options) do
       {:ok, response=%HTTPoison.Response{status_code: 200, body: ""}} ->
+        IO.puts "[1] Error response: #{inspect(response)}"
         {:ok, nil, response}
       {:ok, response=%HTTPoison.Response{status_code: 200, body: body}} ->
+        IO.puts "[2] Error response: #{inspect(response)}"
         {:ok, Poison.Parser.parse!(body), response}
-      {:ok, _response=%HTTPoison.Response{body: body}} ->
+      {:ok, response=%HTTPoison.Response{body: body}} ->
+        IO.puts "[3] Error response: #{inspect(response)}"
         error = Poison.Parser.parse!(body)
         exception = error["__type"]
         message = error["message"]
