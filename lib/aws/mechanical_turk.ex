@@ -596,7 +596,7 @@ defmodule AWS.MechanicalTurk do
         IO.puts "[1] Error response: #{inspect(response)}"
         error = Poison.Parser.parse!(body)
         exception = error["__type"]
-        message = error["message"]
+        message = error["Message"]
         {:error, {exception, message}}
       {:error, response=%HTTPoison.Error{reason: reason}} ->
         IO.puts "[2] Error response: #{inspect(response)}"
