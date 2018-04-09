@@ -595,7 +595,11 @@ defmodule AWS.MechanicalTurk do
       {:ok, response=%HTTPoison.Response{body: body}} ->
         error = Poison.Parser.parse!(body)
         exception = error["__type"]
-        message = error["Message"]
+        message = cond do 
+          error["Message"] -> error["Message"]
+          error["message"] -> error["message"]
+          true -> nil
+        end
         {:error, {exception, message}}
       {:error, response=%HTTPoison.Error{reason: reason}} ->
         {:error, %HTTPoison.Error{reason: reason}}
